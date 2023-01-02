@@ -19,10 +19,26 @@ export class TasksComponent implements OnInit {
     });
   }
 
-  onDelete(task: Task) {
-    if(task.id) {
-      this.taskServiceService.deleteTask(task.id);
-    }
-   
+  deleteTask(task: Task) {
+    this.taskServiceService.deleteTask(task).subscribe((task) => {
+      const findIndex = this.tasks.findIndex((taskInState) => taskInState.id === task.id);
+
+      this.tasks.splice(findIndex, 1);
+    });
+  }
+
+
+  onToggleTask(task: Task) {
+    this.taskServiceService.updateTaskReminder(task).subscribe((task) => {
+      const findIndex = this.tasks.findIndex((taskInState) => taskInState.id === task.id);
+      this.tasks[findIndex] = task;
+    })
+  }
+
+  // ADD TASK
+  onAddTask(newTask: Task) {
+    this.taskServiceService.createTask(newTask).subscribe((task) => {
+      this.tasks.unshift(task);
+    })
   }
 }

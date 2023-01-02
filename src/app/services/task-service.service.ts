@@ -3,6 +3,12 @@ import { Task } from 'src/app/Task';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
+const httpOptions = {
+  herders: new HttpHeaders({
+    "Content-Type": "application/json",
+  }),
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +24,25 @@ export class TaskServiceService {
   }
 
   // DELETE TASK
-  deleteTask(taskId: number):void {
-    this.httpClient.delete(this.apiUrl);
+  deleteTask(task: Task): Observable<Task> {
+    return this.httpClient.delete<Task>(`${this.apiUrl}/${task.id}`);
+  }
+
+  // TOGGLE TASK
+  updateTaskReminder(task: Task): Observable<Task> {
+
+    const url = `${this.apiUrl}/${task.id}`;
+
+    const newTask = {
+      ...task,
+      reminder: !task.reminder,
+    };
+
+    return this.httpClient.put(url, newTask) as Observable<Task>;
+  }
+
+  // CREATE TASK
+  createTask(task: Task): Observable<Task> {
+    return this.httpClient.post(this.apiUrl, task) as Observable<Task>;
   }
 }
