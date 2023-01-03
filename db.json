@@ -29,12 +29,6 @@
       "day": "Jan 2, 2023",
       "reminder": false,
       "id": 6
-    },
-    {
-      "text": "New task 2!",
-      "day": "Jan 2, 12:02pm ",
-      "reminder": false,
-      "id": 7
     }
   ]
 }
